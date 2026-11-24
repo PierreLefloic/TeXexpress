@@ -47,6 +47,13 @@
       ],
       "icon": "build/icon.ico",
       "files": [
+        "src/**",
+        "build/icon.png",
+        "package.json",
+        "!src/**/*.map",
+        "!node_modules/koffi/{doc,src,vendor}/**",
+        "!node_modules/koffi/build/koffi/{freebsd,linux,musl,openbsd}_*/**",
+        "!node_modules/koffi/build/koffi/win32_ia32/**",
         "!node_modules/koffi/build/koffi/darwin_*/**"
       ]
     },
@@ -72,6 +79,13 @@
       "icon": "build/icon.png",
       "artifactName": "TeXexpress-${version}-mac.${ext}",
       "files": [
+        "src/**",
+        "build/icon.png",
+        "package.json",
+        "!src/**/*.map",
+        "!node_modules/koffi/{doc,src,vendor}/**",
+        "!node_modules/koffi/build/koffi/{freebsd,linux,musl,openbsd}_*/**",
+        "!node_modules/koffi/build/koffi/win32_ia32/**",
         "!node_modules/koffi/**"
       ],
       "x64ArchFiles": "Contents/Resources/app.asar.unpacked/node_modules/koffi/**"
