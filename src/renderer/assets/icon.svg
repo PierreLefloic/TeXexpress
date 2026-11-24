@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <!-- TeXexpress app icon: bold Σ (New Computer Modern) on a blue rounded square.
+       Single source for every icon: generated PNG/ICO, title bar, About. -->
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#5B8FFF"/>
+      <stop offset="1" stop-color="#2256D6"/>
+    </linearGradient>
+    <linearGradient id="sheen" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFFFFF" stop-opacity=".18"/>
+      <stop offset=".5" stop-color="#FFFFFF" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <rect x="64" y="64" width="896" height="896" rx="208" fill="url(#bg)"/>
+  <rect x="64" y="64" width="896" height="896" rx="208" fill="url(#sheen)"/>
+  <path fill="#FFFFFF" transform="translate(209.16 770.00) scale(0.72886 -0.72886)" d="M766 260L719 260C698 87 598 66 458 66L189 66L480 324C486 329 492 334 492 343C492 349 488 354 485 358L257 639L461 639C609 639 697 612 719 445L766 445L735 686L96 686C76 686 64 686 64 662C64 652 64 650 74 639L359 288L76 37C70 32 64 27 64 18C64 0 81 0 96 0L735 0Z"/>
+</svg>

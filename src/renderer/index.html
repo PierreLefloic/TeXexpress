@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; img-src 'self' data: blob:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; frame-src 'self'">
+  <title>TeXexpress</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- ============ title bar ============ -->
+  <header class="titlebar">
+    <div class="brand">
+      <img class="logo" src="assets/icon.svg" alt="">
+      <span class="app-name">TeXexpress</span>
+    </div>
+    <div class="titlebar-actions no-drag">
+      <button class="icon-btn toggle" id="btn-pin" data-tip="Keep window on top"></button>
+      <button class="icon-btn" id="btn-settings" data-tip="Settings"></button>
+      <button class="icon-btn" id="btn-help" data-tip="Help (F1)"></button>
+    </div>
+  </header>
+
+  <main class="app">
+    <!-- ============ toolbar ============ -->
+    <section class="card toolbar">
+      <label class="field">
+        <span class="field-label">Font</span>
+        <button class="select" id="sel-font"><span class="select-value"></span><i class="chev"></i></button>
+      </label>
+      <label class="field">
+        <span class="field-label">Size</span>
+        <div class="number" id="num-size">
+          <input type="text" inputmode="decimal" value="20">
+          <span class="unit">pt</span>
+          <div class="steppers"><button data-step="1" tabindex="-1"></button><button data-step="-1" tabindex="-1"></button></div>
+        </div>
+      </label>
+      <label class="field">
+        <span class="field-label">Color</span>
+        <button class="swatch-btn" id="btn-color" data-tip="Equation colour"><span class="swatch"></span></button>
+        <button class="bold-btn" id="btn-bold" data-tip="Bold · Ctrl+B">B</button>
+      </label>
+      <div class="field">
+        <span class="field-label">Mode</span>
+        <div class="segmented" id="seg-mode">
+          <button data-value="display">Display</button>
+          <button data-value="inline">Inline</button>
+        </div>
+      </div>
+      <label class="field">
+        <span class="field-label">Padding</span>
+        <div class="number" id="num-pad">
+          <input type="text" inputmode="decimal" value="1">
+          <span class="unit">pt</span>
+          <div class="steppers"><button data-step="0.5" tabindex="-1"></button><button data-step="-0.5" tabindex="-1"></button></div>
+        </div>
+      </label>
+    </section>
+
+    <!-- ============ workspace ============ -->
+    <div class="workspace">
+      <div class="column">
+        <!-- editor -->
+        <section class="card editor-card" id="editor-card">
+          <div class="card-head">
+            <h2>Equation</h2>
+            <span class="hint" id="editor-hint">Type LaTeX math · Ctrl+Enter to render</span>
+            <div class="spacer"></div>
+            <button class="btn ghost small" id="btn-insert">Insert<i class="chev"></i></button>
+          </div>
+          <div class="editor" id="editor">
+            <pre class="editor-hl" aria-hidden="true"><code id="editor-hl"></code></pre>
+            <textarea id="editor-input" spellcheck="false" autocomplete="off" autocapitalize="off"
+                      placeholder="\frac{a}{b} + \sqrt{x}"></textarea>
+          </div>
+        </section>
+
+        <!-- preview -->
+        <section class="card preview-card">
+          <div class="card-head">
+            <h2>Preview</h2>
+            <span class="hint" id="preview-size"></span>
+            <div class="spacer"></div>
+            <button class="select small" id="sel-zoom"><span class="select-value">Fit</span><i class="chev"></i></button>
+            <div class="segmented small" id="seg-bg">
+              <button data-value="light">Light</button>
+              <button data-value="dark">Dark</button>
+              <button data-value="grid">Grid</button>
+            </div>
+          </div>
+          <div class="preview bg-light" id="preview">
+            <div class="preview-inner" id="preview-inner"></div>
+            <div class="preview-empty" id="preview-empty">Your equation will appear here</div>
+            <div class="preview-error" id="preview-error"></div>
+          </div>
+        </section>
+      </div>
+
+      <!-- history -->
+      <aside class="card history-card">
+        <div class="card-head">
+          <h2>History</h2>
+          <span class="count" id="history-count"></span>
+          <div class="spacer"></div>
+          <button class="btn ghost small" id="btn-clear-history" data-tip="Remove every equation that isn't pinned">Clear unpinned</button>
+        </div>
+        <div class="search">
+          <i class="search-icon"></i>
+          <input type="text" id="history-search" placeholder="Search" spellcheck="false">
+        </div>
+        <ul class="history-list" id="history-list"></ul>
+        <div class="history-empty" id="history-empty">
+          <div class="empty-title">No equations yet</div>
+          <div>Equations you copy or save show up here.</div>
+        </div>
+      </aside>
+    </div>
+
+    <!-- ============ action bar ============ -->
+    <footer class="actions">
+      <button class="btn primary" id="btn-copy-svg" data-tip="For PowerPoint and Affinity · Ctrl+Shift+C"><i class="ic" data-ic="copy"></i>Copy SVG</button>
+      <button class="btn" id="btn-copy-pdf" data-tip="Vector PDF · Ctrl+Shift+D"><i class="ic" data-ic="file"></i>Copy PDF</button>
+      <button class="btn" id="btn-copy-png" data-tip="Transparent image · Ctrl+Shift+B"><i class="ic" data-ic="image"></i>Copy PNG</button>
+      <button class="btn" id="btn-more">More<i class="chev"></i></button>
+      <div class="spacer"></div>
+      <div class="status" id="status"></div>
+    </footer>
+  </main>
+
+  <!-- ============ overlays ============ -->
+  <div class="toast" id="toast"></div>
+  <div class="tooltip" id="tooltip"></div>
+  <div class="popover-layer" id="popover-layer"></div>
+  <div class="modal-layer" id="modal-layer"></div>
+  <div id="mathjax-frames" hidden></div>
+
+  <script src="icons.js"></script>
+  <script src="svgtools.js"></script>
+  <script src="latex-helpers.js"></script>
+  <script src="ui.js"></script>
+  <script src="colorpicker.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'">
+<title>MathJax renderer</title>
+<script>
+  // One hidden frame per font: MathJax can only be configured with one font per page.
+  const params = new URLSearchParams(location.search);
+  const font = params.get('font') || 'mathjax-newcm';
+  window.MathJax = {
+    loader: {
+      load: ['[tex]/physics', '[tex]/mathtools', '[tex]/cancel', '[tex]/mhchem', '[tex]/braket',
+             '[tex]/boldsymbol', '[tex]/color', '[tex]/textmacros', '[tex]/upgreek', '[tex]/gensymb'],
+      // fonts and font extensions (e.g. mhchem) load from the local packages, never the CDN
+      paths: { fonts: '../vendor/fonts' },
+    },
+    options: {
+      enableMenu: false, enableEnrichment: false, enableSpeech: false, enableBraille: false,
+      enableExplorer: false,
+      menuOptions: { settings: { enrich: false, speech: false, braille: false, assistiveMml: false,
+                                 collapsible: false } },
+    },
+    tex: {
+      packages: { '[+]': ['physics', 'mathtools', 'cancel', 'mhchem', 'braket', 'boldsymbol',
+                           'color', 'textmacros', 'upgreek', 'gensymb'],
+                  '[-]': ['noundefined', 'noerrors'] },
+      formatError: (jax, err) => { throw err; },
+    },
+    output: { font, fontCache: 'none', displayOverflow: 'overflow' },
+    startup: {
+      typeset: false,
+      ready() {
+        MathJax.startup.defaultReady();
+        MathJax.startup.promise.then(() => parent.postMessage({ type: 'mj-ready', font }, '*'));
+      },
+    },
+  };
+</script>
+<script src="../vendor/mathjax/tex-svg-nofont.js"></script>
+<script src="mathjax-frame.js"></script>
+</head>
+<body></body>
+</html>
