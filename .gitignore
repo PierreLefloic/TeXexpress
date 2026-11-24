@@ -3,3 +3,4 @@ dist/
 *.log
 src/vendor/
 scratch/
+build/license.txt

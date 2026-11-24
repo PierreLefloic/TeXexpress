@@ -59,6 +59,10 @@ for (const pkg of FONT_PACKAGES) {
 
 // --- the app's own license, shown in Help → About & licenses (src/licenses holds the others)
 fs.copyFileSync(path.join(root, 'LICENSE'), path.join(root, 'src', 'licenses', 'TeXexpress-MIT.txt'));
+// …and on the Windows installer's license page: NSIS needs a UTF-8 BOM, otherwise
+// non-ASCII characters (the ï in the author's name) are read in the ANSI code page
+fs.writeFileSync(path.join(root, 'build', 'license.txt'),
+  Buffer.concat([Buffer.from([0xef, 0xbb, 0xbf]), fs.readFileSync(path.join(root, 'LICENSE'))]));
 
 // report
 let bytes = 0;
