@@ -1,7 +1,7 @@
 {
   "name": "texexpress",
   "productName": "TeXexpress",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Type LaTeX, paste vector equations into PowerPoint, Affinity and more.",
   "main": "src/main/main.js",
   "scripts": {

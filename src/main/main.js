@@ -76,6 +76,7 @@ async function devScreenshots() {
       try { const r = await win.webContents.executeJavaScript(st.js); if (r !== undefined) console.log('[step]', JSON.stringify(r)); }
       catch (e) { console.log('[step error]', e.message); }
     }
+    if (st.size) { win.unmaximize(); win.setContentSize(st.size[0], st.size[1]); await wait(400); }
     if (st.wait) await wait(st.wait);
     if (st.shot) fs.writeFileSync(st.shot, (await win.webContents.capturePage()).toPNG());
   }
