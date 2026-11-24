@@ -1,7 +1,7 @@
 {
   "name": "texexpress",
   "productName": "TeXexpress",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Type LaTeX, paste vector equations into PowerPoint, Affinity and more.",
   "main": "src/main/main.js",
   "scripts": {
@@ -45,7 +45,10 @@
           ]
         }
       ],
-      "icon": "build/icon.ico"
+      "icon": "build/icon.ico",
+      "files": [
+        "!node_modules/koffi/build/koffi/darwin_*/**"
+      ]
     },
     "nsis": {
       "oneClick": false,
@@ -67,7 +70,11 @@
       ],
       "category": "public.app-category.productivity",
       "icon": "build/icon.png",
-      "artifactName": "TeXexpress-${version}-mac.${ext}"
+      "artifactName": "TeXexpress-${version}-mac.${ext}",
+      "files": [
+        "!node_modules/koffi/**"
+      ],
+      "x64ArchFiles": "Contents/Resources/app.asar.unpacked/node_modules/koffi/**"
     },
     "linux": {
       "target": [
