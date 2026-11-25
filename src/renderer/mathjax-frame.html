@@ -27,7 +27,9 @@
                   '[-]': ['noundefined', 'noerrors'] },
       formatError: (jax, err) => { throw err; },
     },
-    output: { font, fontCache: 'none', displayOverflow: 'overflow' },
+    // linebreaks.inline: false – MathJax 4 otherwise splits inline math into several SVG
+    // pieces at possible line breaks (like running text); an export must be a single piece
+    output: { font, fontCache: 'none', displayOverflow: 'overflow', linebreaks: { inline: false } },
     startup: {
       typeset: false,
       ready() {

@@ -181,6 +181,28 @@ hlBox.className = 'hl-box';
 let parts = [];          // [{ el, start, end }] for the current preview
 let hoverPart = null;
 
+/** True if text[i] is a letter of a command name, e.g. the "a" in \frac. */
+function insideCommandName(text, i) {
+  if (!/[A-Za-z]/.test(text[i] || '')) return false;
+  let j = i - 1;
+  while (j >= 0 && /[A-Za-z]/.test(text[j])) j--;
+  return j >= 0 && text[j] === '\\';
+}
+
+/**
+ * First occurrence of `tex` in text[from, hi) that is a real token: not letters taken from
+ * inside a command name ("a" in \frac), and not a command cut short (\in inside \infty).
+ */
+function findTex(text, tex, from, hi) {
+  const endsWithCommand = /\\[A-Za-z]+$/.test(tex);
+  for (let i = text.indexOf(tex, from); i >= 0 && i + tex.length <= hi; i = text.indexOf(tex, i + 1)) {
+    if (insideCommandName(text, i)) continue;
+    if (endsWithCommand && /[A-Za-z]/.test(text[i + tex.length] || '')) continue;
+    return i;
+  }
+  return -1;
+}
+
 function buildSourceMap() {
   parts = [];
   hoverPart = null;
@@ -195,9 +217,8 @@ function buildSourceMap() {
       const tex = (c.getAttribute('data-latex') || '').trim();
       let start = -1;
       if (tex) {
-        start = text.indexOf(tex, pos);
-        if (start < 0 || start + tex.length > hi) start = text.indexOf(tex, lo); // out-of-order children (x_i^2)
-        if (start >= 0 && start + tex.length > hi) start = -1;
+        start = findTex(text, tex, pos, hi);
+        if (start < 0) start = findTex(text, tex, lo, hi); // out-of-order children (x_i^2)
       }
       if (start >= 0) {
         const end = start + tex.length;

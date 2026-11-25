@@ -14,8 +14,11 @@ async function render({ id, tex, display }) {
   try {
     MathJax.texReset();
     const node = await MathJax.tex2svgPromise(tex, { display });
-    const svg = node.querySelector('svg');
-    if (!svg) throw new Error('No output');
+    const svgs = node.querySelectorAll('svg');
+    if (!svgs.length) throw new Error('No output');
+    // never silently keep only part of the equation
+    if (svgs.length > 1) throw new Error('The equation was split into several pieces');
+    const svg = svgs[0];
     const err = svg.querySelector('[data-mml-node="merror"]');
     if (err) throw new Error(err.getAttribute('data-mjx-error') || err.textContent || 'LaTeX error');
     parent.postMessage({ type: 'rendered', id, svg: svg.outerHTML }, '*');
